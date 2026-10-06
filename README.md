@@ -57,18 +57,28 @@ Datas de saída são sempre no offset de `America/Sao_Paulo` (`-03:00`), indepen
 ## Arquitetura
 
 ```
-src/
-  domain/
-    types.ts         tipos
-    time.ts          parse ISO estrito, conversões de fuso, formatação
-    rules.ts         constantes e regras puras (janela, duração, folga, turno)
-    availability.ts  detecção de colisão + geração de sugestões
-    validation.ts    validação de payload/query -> erros por campo
-    repository.ts    interface + implementação em memória
-    service.ts       orquestra: valida conflito, persiste, monta resposta
-  http/app.ts        rotas Express e mapeamento de status (sem regra de negócio)
-  server.ts          bootstrap
-tests/               unit.test.ts (domínio) e api.test.ts (integração HTTP)
+agenda-visitas-api/
+├── package.json dependências e comandos (dev, test, typecheck)
+├── tsconfig.json configuração do TypeScript (modo estrito)
+├── README.md documentação do desafio
+├── src/
+│ ├── server.ts liga o servidor na porta 3000
+│ ├── http/
+│ │ └── app.ts rotas Express: recebe, delega, devolve o status HTTP
+│ └── domain/ as regras de negócio (nada de HTTP aqui)
+│ ├── types.ts formatos dos dados (Agendamento, DTO, erro)
+│ ├── time.ts datas e fusos: ler ISO, converter, formatar
+│ ├── rules.ts constantes e regras: janela, duração, folga, turno
+│ ├── validation.ts valida o que chega (gera os erros do 400)
+│ ├── availability.ts colisão de horários + geração de sugestões
+│ ├── repository.ts onde os dados ficam (memória)
+│ └── service.ts orquestra tudo: valida conflito, salva, responde
+└── tests/
+├── unit.test.ts 22 testes das funções do domínio
+└── api.test.ts 33 testes chamando os endpoints de verdade
+Por que assim: separei http de domain para que as regras possam ser testadas sem subir servidor e
+para que o Express fosse só um "tradutor" de resultado em status. O repositório fica atrás de uma
+interface, então trocar memória por banco de dados não mexe nas regras.
 ```
 
 Decisões principais:

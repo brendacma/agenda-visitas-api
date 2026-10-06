@@ -1,7 +1,5 @@
 # Tópico 1 — Triagem, Priorização e Diagnóstico
 
-> Observação: não conheço as ferramentas internas da Morada.ai, então descrevo os tipos de log/painel que eu buscaria (logs da plataforma, backoffice, histórico de webhooks etc.) sem citar nomes que eu não possa confirmar.
-
 ## 1. Ordem de priorização
 
 | Posição | Chamado | Cliente |
